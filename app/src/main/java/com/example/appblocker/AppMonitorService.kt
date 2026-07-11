@@ -14,6 +14,8 @@ class AppMonitorService : AccessibilityService() {
 
     private val channelId = "AppBlockerChannel"
     private var mediaPlayer: MediaPlayer? = null
+    
+    private val lastTriggerTimeMap = mutableMapOf<String, Long>()
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -34,13 +36,25 @@ class AppMonitorService : AccessibilityService() {
                     val useNotification = parts[1].toBoolean()
                     val useVoice = parts[2].toBoolean()
                     val audioUriString = parts[3]
+                    
+                    // استخراج الثواني اللي المستخدم حددها (لو ملهاش قيمة هناخد 15 ثانية كاحتياطي)
+                    val cooldownSeconds = if (parts.size >= 5) parts[4].toLong() else 15L
+                    val cooldownMillis = cooldownSeconds * 1000L // تحويل الثواني لملي ثانية
 
-                    // تشغيل الإشعار
+                    val currentTime = System.currentTimeMillis()
+                    val lastTime = lastTriggerTimeMap[openedPackageName] ?: 0L
+
+                    // التأكد إن الوقت اللي مر أكبر من المدة اللي المستخدم حددها
+                    if (currentTime - lastTime < cooldownMillis) {
+                        return
+                    }
+
+                    lastTriggerTimeMap[openedPackageName] = currentTime
+
                     if (useNotification) {
                         sendNotification(openedPackageName, message)
                     }
 
-                    // تشغيل الصوت اللي اختاره المستخدم
                     if (useVoice && audioUriString.isNotEmpty()) {
                         playUserAudio(audioUriString)
                     }
@@ -51,10 +65,7 @@ class AppMonitorService : AccessibilityService() {
 
     private fun playUserAudio(uriString: String) {
         try {
-            // إيقاف أي صوت قديم شغال
             mediaPlayer?.release()
-            
-            // تحويل النص إلى مسار حقيقي وقراءته
             val audioUri = Uri.parse(uriString)
             mediaPlayer = MediaPlayer.create(this, audioUri)
             
@@ -65,7 +76,7 @@ class AppMonitorService : AccessibilityService() {
             
             mediaPlayer?.start()
         } catch (e: Exception) {
-            // تجاهل الخطأ في حالة تم مسح الملف من الهاتف
+            // تجاهل الخطأ
         }
     }
 
