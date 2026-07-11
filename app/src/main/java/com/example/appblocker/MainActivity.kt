@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         btnOpenSettings = findViewById(R.id.btnOpenSettings)
         val spinnerApps = findViewById<Spinner>(R.id.spinnerApps)
         val etMessage = findViewById<EditText>(R.id.etMessage)
+        val etCooldown = findViewById<EditText>(R.id.etCooldown) // الخانة الجديدة
         val cbVoice = findViewById<CheckBox>(R.id.cbVoice)
         val cbNotification = findViewById<CheckBox>(R.id.cbNotification)
         val btnPickAudio = findViewById<Button>(R.id.btnPickAudio)
@@ -57,11 +58,9 @@ class MainActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, appList)
         spinnerApps.adapter = adapter
 
-        // التعديل الجذري هنا: استخدام OpenDocument بدلاً من GetContent
         val pickAudioLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
             if (uri != null) {
                 try {
-                    // أخذ صلاحية دائمة بطريقة آمنة
                     contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
                     selectedAudioUri = uri.toString()
                     tvAudioStatus.text = "تم اختيار الملف بنجاح ✅"
@@ -73,15 +72,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnPickAudio.setOnClickListener {
-            // التعديل هنا: تمرير نوع الملف كمصفوفة (Array)
             pickAudioLauncher.launch(arrayOf("audio/*")) 
         }
 
         btnSave.setOnClickListener {
             val selectedApp = spinnerApps.selectedItem as? AppInfo
             val message = etMessage.text.toString().trim()
+            val cooldownStr = etCooldown.text.toString().trim() // قراءة المدة
             val useVoice = cbVoice.isChecked
             val useNotification = cbNotification.isChecked
+
+            // لو المستخدم مكتبش رقم، هنعتبرها 15 ثانية افتراضياً
+            val cooldownSeconds = if (cooldownStr.isNotEmpty()) cooldownStr.toInt() else 15
 
             if (!useVoice && !useNotification) {
                 Toast.makeText(this, "يجب تفعيل الصوت أو الإشعار على الأقل!", Toast.LENGTH_SHORT).show()
@@ -95,7 +97,8 @@ class MainActivity : AppCompatActivity() {
 
             if (selectedApp != null && message.isNotEmpty()) {
                 val editor = sharedPref.edit()
-                val configData = "$message|$useNotification|$useVoice|$selectedAudioUri"
+                // إضافة الرقم الجديد للبيانات المحفوظة
+                val configData = "$message|$useNotification|$useVoice|$selectedAudioUri|$cooldownSeconds"
                 
                 editor.putString(selectedApp.packageName, configData)
                 editor.apply()
@@ -103,6 +106,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "تم الحفظ بنجاح لتطبيق ${selectedApp.name}", Toast.LENGTH_LONG).show()
                 
                 etMessage.text.clear()
+                etCooldown.text.clear()
                 selectedAudioUri = ""
                 tvAudioStatus.text = "لم يتم اختيار ملف"
                 tvAudioStatus.setTextColor(android.graphics.Color.parseColor("#F44336"))
