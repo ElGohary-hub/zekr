@@ -31,36 +31,8 @@
         android:id="@+id/etMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="اكتب الرسالة التحذيرية هنا"
+        android:hint="اكتب الرسالة التحذيرية للإشعار"
         android:layout_marginTop="15dp"/>
-
-    <CheckBox
-        android:id="@+id/cbVoice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="تفعيل الصوت" />
-
-    <RadioGroup
-        android:id="@+id/rgGender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="10dp">
-
-        <RadioButton
-            android:id="@+id/rbFemale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="أنثى"
-            android:checked="true"/> <RadioButton
-            android:id="@+id/rbMale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ذكر"
-            android:layout_marginStart="20dp"/>
-    </RadioGroup>
 
     <CheckBox
         android:id="@+id/cbNotification"
@@ -69,11 +41,35 @@
         android:text="تفعيل الإشعار المكتوب"
         android:layout_marginTop="10dp"/>
 
+    <CheckBox
+        android:id="@+id/cbVoice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="تفعيل التنبيه الصوتي" />
+
+    <Button
+        android:id="@+id/btnPickAudio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="اختر ملف صوتي من هاتفك"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#2196F3"/>
+
+    <TextView
+        android:id="@+id/tvAudioStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="لم يتم اختيار ملف"
+        android:textColor="#F44336"
+        android:gravity="center"
+        android:layout_marginTop="5dp"/>
+
     <Button
         android:id="@+id/btnSave"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="حفظ الإعدادات"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="30dp"/>
 
 </LinearLayout>
