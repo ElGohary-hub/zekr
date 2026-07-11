@@ -34,6 +34,14 @@
         android:hint="اكتب الرسالة التحذيرية للإشعار"
         android:layout_marginTop="15dp"/>
 
+    <EditText
+        android:id="@+id/etCooldown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="مدة التكرار (بالثواني) - مثلا: 60"
+        android:inputType="number"
+        android:layout_marginTop="10dp"/>
+
     <CheckBox
         android:id="@+id/cbNotification"
         android:layout_width="wrap_content"
@@ -70,6 +78,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="حفظ الإعدادات"
-        android:layout_marginTop="30dp"/>
+        android:layout_marginTop="20dp"/>
 
 </LinearLayout>
