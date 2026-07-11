@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private val appList = mutableListOf<AppInfo>()
     private lateinit var btnOpenSettings: Button
-    private var selectedAudioUri: String = "" // متغير لحفظ مسار الملف الصوتي
+    private var selectedAudioUri: String = "" 
 
     data class AppInfo(val name: String, val packageName: String) {
         override fun toString(): String {
@@ -42,7 +42,6 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPref = getSharedPreferences("AppConfigs", Context.MODE_PRIVATE)
 
-        // طلب إذن الإشعارات
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
@@ -58,20 +57,24 @@ class MainActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, appList)
         spinnerApps.adapter = adapter
 
-        // أداة لفتح مدير الملفات واختيار ملف صوتي
-        val pickAudioLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        // التعديل الجذري هنا: استخدام OpenDocument بدلاً من GetContent
+        val pickAudioLauncher = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
             if (uri != null) {
-                // أخذ صلاحية دائمة لقراءة الملف حتى لو التطبيق مقفول
-                contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                selectedAudioUri = uri.toString()
-                tvAudioStatus.text = "تم اختيار الملف بنجاح ✅"
-                tvAudioStatus.setTextColor(android.graphics.Color.parseColor("#4CAF50")) // لون أخضر
+                try {
+                    // أخذ صلاحية دائمة بطريقة آمنة
+                    contentResolver.takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    selectedAudioUri = uri.toString()
+                    tvAudioStatus.text = "تم اختيار الملف بنجاح ✅"
+                    tvAudioStatus.setTextColor(android.graphics.Color.parseColor("#4CAF50")) 
+                } catch (e: SecurityException) {
+                    Toast.makeText(this, "حدث خطأ في صلاحية الملف، يرجى اختيار ملف آخر", Toast.LENGTH_LONG).show()
+                }
             }
         }
 
-        // لما يضغط على زرار اختيار الصوت
         btnPickAudio.setOnClickListener {
-            pickAudioLauncher.launch("audio/*") // بيعرض ملفات الصوت بس
+            // التعديل هنا: تمرير نوع الملف كمصفوفة (Array)
+            pickAudioLauncher.launch(arrayOf("audio/*")) 
         }
 
         btnSave.setOnClickListener {
@@ -85,7 +88,6 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // لو فعل الصوت بس مختارش ملف
             if (useVoice && selectedAudioUri.isEmpty()) {
                 Toast.makeText(this, "الرجاء اختيار ملف صوتي من هاتفك!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -93,7 +95,6 @@ class MainActivity : AppCompatActivity() {
 
             if (selectedApp != null && message.isNotEmpty()) {
                 val editor = sharedPref.edit()
-                // حفظ البيانات: (الرسالة | تشغيل الإشعار | تشغيل الصوت | مسار الملف الصوتي)
                 val configData = "$message|$useNotification|$useVoice|$selectedAudioUri"
                 
                 editor.putString(selectedApp.packageName, configData)
@@ -101,7 +102,6 @@ class MainActivity : AppCompatActivity() {
                 
                 Toast.makeText(this, "تم الحفظ بنجاح لتطبيق ${selectedApp.name}", Toast.LENGTH_LONG).show()
                 
-                // تفريغ البيانات عشان لو حب يضيف تطبيق تاني
                 etMessage.text.clear()
                 selectedAudioUri = ""
                 tvAudioStatus.text = "لم يتم اختيار ملف"
