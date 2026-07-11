@@ -8,12 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -21,7 +16,7 @@ import androidx.core.content.ContextCompat
 class MainActivity : AppCompatActivity() {
 
     private val appList = mutableListOf<AppInfo>()
-    private lateinit var btnOpenSettings: Button // عرفنا الزرار هنا عشان نتحكم فيه في الشاشة كلها
+    private lateinit var btnOpenSettings: Button
 
     data class AppInfo(val name: String, val packageName: String) {
         override fun toString(): String {
@@ -38,11 +33,11 @@ class MainActivity : AppCompatActivity() {
         val etMessage = findViewById<EditText>(R.id.etMessage)
         val cbVoice = findViewById<CheckBox>(R.id.cbVoice)
         val cbNotification = findViewById<CheckBox>(R.id.cbNotification)
+        val rbMale = findViewById<RadioButton>(R.id.rbMale) // زرار الذكر
         val btnSave = findViewById<Button>(R.id.btnSave)
 
         val sharedPref = getSharedPreferences("AppConfigs", Context.MODE_PRIVATE)
 
-        // ===== التعديل الأول: طلب إذن الإشعارات لأندرويد 13 فما فوق =====
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
@@ -63,6 +58,7 @@ class MainActivity : AppCompatActivity() {
             val message = etMessage.text.toString().trim()
             val useVoice = cbVoice.isChecked
             val useNotification = cbNotification.isChecked
+            val isMale = rbMale.isChecked // بنعرف هل المستخدم اختار ذكر أم لا
 
             if (!useVoice && !useNotification) {
                 Toast.makeText(this, "يجب تفعيل الصوت أو الإشعار على الأقل!", Toast.LENGTH_SHORT).show()
@@ -71,7 +67,8 @@ class MainActivity : AppCompatActivity() {
 
             if (selectedApp != null && message.isNotEmpty()) {
                 val editor = sharedPref.edit()
-                val configData = "$message|$useVoice|$useNotification"
+                // ضفنا اختيار الصوت (isMale) في البيانات اللي بتتحفظ
+                val configData = "$message|$useVoice|$useNotification|$isMale"
                 
                 editor.putString(selectedApp.packageName, configData)
                 editor.apply()
@@ -84,17 +81,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // ===== التعديل الثاني: دالة تعمل كل مرة الشاشة تظهر للمستخدم =====
     override fun onResume() {
         super.onResume()
         if (isAccessibilityEnabled()) {
-            btnOpenSettings.visibility = View.GONE // إخفاء الزرار
+            btnOpenSettings.visibility = View.GONE
         } else {
-            btnOpenSettings.visibility = View.VISIBLE // إظهار الزرار
+            btnOpenSettings.visibility = View.VISIBLE
         }
     }
 
-    // دالة للتحقق هل صلاحية الوصول مفعلة لتطبيقنا ولا لأ
     private fun isAccessibilityEnabled(): Boolean {
         val prefString = Settings.Secure.getString(contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
         return prefString?.contains(packageName) == true
