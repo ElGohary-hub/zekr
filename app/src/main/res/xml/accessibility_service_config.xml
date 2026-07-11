@@ -4,4 +4,4 @@
     android:accessibilityFeedbackType="feedbackSpoken"
     android:accessibilityFlags="flagDefault"
     android:canRetrieveWindowContent="false"
-    android:description="خدمة حظر التطبيقات" />
+    android:description="@string/app_description" />
