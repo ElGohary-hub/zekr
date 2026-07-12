@@ -20,7 +20,9 @@
             android:textColor="#FFFFFF"
             android:backgroundTint="#FF4500"
             android:layout_marginBottom="15dp"
-            android:visibility="gone"/> <LinearLayout
+            android:visibility="gone"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_card_dark"
@@ -28,26 +30,14 @@
             android:padding="15dp"
             android:layout_marginBottom="20dp">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="15dp"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="اختر التطبيق المستهدف"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🎯"
-                    android:textSize="20sp" />
-            </LinearLayout>
+                android:text="اختر التطبيق المستهدف"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginBottom="15dp" />
 
             <Spinner
                 android:id="@+id/spinnerApps"
@@ -66,26 +56,14 @@
             android:padding="15dp"
             android:layout_marginBottom="20dp">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="15dp"
-                android:gravity="center_vertical">
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="اكتب الرسالة التحذيرية للإشعار"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="💬"
-                    android:textSize="20sp" />
-            </LinearLayout>
+                android:text="اكتب الرسالة التحذيرية للإشعار"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginBottom="15dp" />
 
             <EditText
                 android:id="@+id/etMessage"
@@ -142,12 +120,6 @@
                 android:layout_marginBottom="15dp">
                 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔔"
-                    android:textSize="22sp"/>
-                    
-                <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -171,12 +143,6 @@
                 android:gravity="center_vertical"
                 android:paddingHorizontal="20dp">
                 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🔊"
-                    android:textSize="22sp"/>
-                    
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
