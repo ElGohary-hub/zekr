@@ -1,83 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:background="@drawable/bg_gradient"
+    android:layoutDirection="rtl"
+    android:fillViewport="true">
 
-    <Button
-        android:id="@+id/btnOpenSettings"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="تفعيل صلاحية الوصول (Accessibility)"
-        android:backgroundTint="#FF5722"/>
+        android:orientation="vertical"
+        android:padding="20dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="اختر التطبيق المستهدف:"
-        android:layout_marginTop="20dp"
-        android:textStyle="bold"
-        android:textSize="16sp"/>
+        <Button
+            android:id="@+id/btnOpenSettings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="تفعيل صلاحية الوصول (Accessibility)"
+            android:backgroundTint="#FF5722"
+            android:layout_marginBottom="15dp"/>
 
-    <Spinner
-        android:id="@+id/spinnerApps"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:background="#E0E0E0"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_glass_card"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="20dp">
 
-    <EditText
-        android:id="@+id/etMessage"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="اكتب الرسالة التحذيرية للإشعار"
-        android:layout_marginTop="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🎯 اختر التطبيق المستهدف"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginBottom="12dp"/>
 
-    <EditText
-        android:id="@+id/etCooldown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="مدة التكرار (بالثواني) - مثلا: 60"
-        android:inputType="number"
-        android:layout_marginTop="10dp"/>
+            <Spinner
+                android:id="@+id/spinnerApps"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_input"
+                android:popupBackground="#1E293B"
+                android:paddingEnd="10dp"/>
+        </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/cbNotification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="تفعيل الإشعار المكتوب"
-        android:layout_marginTop="10dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_glass_card"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="20dp">
 
-    <CheckBox
-        android:id="@+id/cbVoice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="تفعيل التنبيه الصوتي" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💬 اكتب الرسالة التحذيرية للإشعار"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginBottom="12dp"/>
 
-    <Button
-        android:id="@+id/btnPickAudio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="اختر ملف صوتي من هاتفك"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#2196F3"/>
+            <EditText
+                android:id="@+id/etMessage"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_input"
+                android:hint="الرسالة..."
+                android:textColorHint="#99FFFFFF"
+                android:textColor="#FFFFFF"
+                android:padding="12dp"
+                android:layout_marginBottom="15dp"/>
 
-    <TextView
-        android:id="@+id/tvAudioStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="لم يتم اختيار ملف"
-        android:textColor="#F44336"
-        android:gravity="center"
-        android:layout_marginTop="5dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="⏱ مدة التكرار (بالثواني) - مثال: 60"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginBottom="12dp"
+                android:layout_gravity="center_horizontal"/>
 
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="حفظ الإعدادات"
-        android:layout_marginTop="20dp"/>
+            <EditText
+                android:id="@+id/etCooldown"
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:minWidth="120dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/bg_input"
+                android:hint="0000"
+                android:inputType="number"
+                android:textColorHint="#99FFFFFF"
+                android:textColor="#FFFFFF"
+                android:textAlignment="center"
+                android:padding="10dp"/>
+        </LinearLayout>
 
-</LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_glass_card"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:layout_marginBottom="20dp">
+
+            <CheckBox
+                android:id="@+id/cbNotification"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="🔔 تفعيل المكتوب كإشعار"
+                android:textColor="#FFFFFF"
+                android:buttonTint="#FFFFFF"
+                android:layoutDirection="rtl"
+                android:textAlignment="viewStart"
+                android:paddingStart="10dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#20FFFFFF"
+                android:layout_marginVertical="5dp"/>
+
+            <CheckBox
+                android:id="@+id/cbVoice"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="🔊 تفعيل التنبيه الصوتي"
+                android:textColor="#FFFFFF"
+                android:buttonTint="#FFFFFF"
+                android:layoutDirection="rtl"
+                android:textAlignment="viewStart"
+                android:paddingStart="10dp"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnPickAudio"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="اختر ملف صوتي من هاتفك"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:backgroundTint="#3B82F6"
+            android:layout_marginBottom="15dp"
+            android:elevation="0dp"/>
+
+        <TextView
+            android:id="@+id/tvAudioStatus"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/bg_input"
+            android:text="لم يتم اختيار ملف"
+            android:textColor="#FCA5A5"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="حفظ الإعدادات"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:backgroundTint="#475569"
+            android:elevation="0dp"
+            android:layout_marginBottom="30dp"/>
+
+    </LinearLayout>
+</ScrollView>
